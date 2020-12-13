@@ -42,7 +42,7 @@ client.on('message', function(message) {
 				'Максимка',
 				'Дима',
 				'Димочка',
-				'Дмитрийpm2'
+				'Дмитрийp'
 			];
 
 			string = string.replace(/[\,\.\?\-\_\—\!]/gm, '');
