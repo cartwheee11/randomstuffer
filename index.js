@@ -18,6 +18,7 @@ client.on('message', function(message) {
 	if (command == '') {
 		req('http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=ru', function(err, res, body) {
 			let string = JSON.parse(body).quoteText;
+			
 
 			const mor = new Morphy('ru', {
 			  nojo: true,
@@ -34,8 +35,8 @@ client.on('message', function(message) {
 				'Валера',
 				'Ваня',
 				'Никита',
-				'Крыса',
-				'Админ'
+				'Иван',
+				'Валерий',
 			];
 
 			let cases = ['ИМ', 'ДТ', 'ТВ', 'ВН', 'ПР'];
@@ -55,11 +56,13 @@ client.on('message', function(message) {
 					let name = names[rand];
 					
 					let provider = mor.getGrammemsProvider();
-					provider.excludeGroups('С', ['род', 'залог', 'одушевленность', 'безличный глагол', 'сравнительная форма', 'превосходная степень', 'переходность', 'вид', 'краткость', 'повелительная форман']);
+					provider.excludeGroups('С', ['повелительная форма', 'род', 'одушевленность', 'безличный глагол', 'сравнительная форма', 'превосходная степень', 'переходность', 'вид', 'краткость', 'повелительная форман']);
 					let formedName = mor.castFormByPattern(name, word, provider, true);
-					formedName = formedName[ formedName.length - 1 ];
-					
-					result += formedName ? formedName.toLowerCase() + ' ' : word + ' ';
+					// console.log(formedName);
+					console.log(provider);
+					formedName = formedName[ Math.floor( Math.random() * formedName.length ) ];
+					console.log(formedName);
+					result += ( formedName && ( Math.random() >= 0.5 ) ) ? formedName.toLowerCase() + ' ' : word + ' ';
 				} else {
 					result += word + ' ';
 				}
@@ -67,11 +70,7 @@ client.on('message', function(message) {
 
 			message.reply(result);
 		});
-
-		
 	}
-
-
 });
 
 
