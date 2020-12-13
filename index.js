@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+zconst Discord = require('discord.js');
 const Morphy = require('phpmorphy');
 const fs = require('fs');
 const req = require('request')
@@ -39,7 +39,10 @@ client.on('message', function(message) {
 				'Никита',
 				'Иван',
 				'Валерий',
-				'Максимка'
+				'Максимка',
+				'Дима',
+				'Димочка',
+				'Дмитрий'
 			];
 
 			string = string.replace(/[\,\.\?\-\_\—\!]/gm, '');
