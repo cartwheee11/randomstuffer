@@ -8,6 +8,16 @@ const config = require("./config.json");
 let client = new Discord.Client();
 client.login(config.BOT_TOKEN);
 
+const mor = new Morphy('ru', {
+  nojo: true,
+  storage: Morphy.STORAGE_MEM,
+  predict_by_suffix: true,
+  predict_by_db: true,
+  graminfo_as_text: true,
+  use_ancodes_cache: false,
+  resolve_ancodes: Morphy.RESOLVE_ANCODES_AS_TEXT,
+});
+
 let PREFIX = '-rand'
 client.on('message', function(message) {
 	let content = message.content;
@@ -20,15 +30,7 @@ client.on('message', function(message) {
 			let string = JSON.parse(body).quoteText;
 			
 
-			const mor = new Morphy('ru', {
-			  nojo: true,
-			  storage: Morphy.STORAGE_MEM,
-			  predict_by_suffix: true,
-			  predict_by_db: true,
-			  graminfo_as_text: true,
-			  use_ancodes_cache: false,
-			  resolve_ancodes: Morphy.RESOLVE_ANCODES_AS_TEXT,
-			});
+			
 
 			let names = [
 				'Максим',
@@ -37,10 +39,8 @@ client.on('message', function(message) {
 				'Никита',
 				'Иван',
 				'Валерий',
+				'Максимка'
 			];
-
-			let cases = ['ИМ', 'ДТ', 'ТВ', 'ВН', 'ПР'];
-			let fams = ['ЕД', 'МН', 'НО'];
 
 			string = string.replace(/[\,\.\?\-\_\—\!]/gm, '');
 			let arr = string.split(' ');
@@ -50,7 +50,7 @@ client.on('message', function(message) {
 
 			arr.forEach(word => {
 				let isNoun = mor.getPartOfSpeech(word) == 'С';
-				
+
 				if(isNoun) {
 					let rand = Math.floor(Math.random() * names.length);
 					let name = names[rand];
@@ -58,10 +58,8 @@ client.on('message', function(message) {
 					let provider = mor.getGrammemsProvider();
 					provider.excludeGroups('С', ['повелительная форма', 'род', 'одушевленность', 'безличный глагол', 'сравнительная форма', 'превосходная степень', 'переходность', 'вид', 'краткость', 'повелительная форман']);
 					let formedName = mor.castFormByPattern(name, word, provider, true);
-					// console.log(formedName);
-					console.log(provider);
+					
 					formedName = formedName[ Math.floor( Math.random() * formedName.length ) ];
-					console.log(formedName);
 					result += ( formedName && ( Math.random() >= 0.5 ) ) ? formedName.toLowerCase() + ' ' : word + ' ';
 				} else {
 					result += word + ' ';
